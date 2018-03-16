@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.views import View
 
-from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer
+from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer, Districts, BloodGroups
 
 '''
 Web Portal
@@ -20,17 +20,18 @@ Features:
 def portal_index(request):
     return render(request, "bloodfinder/web_index.html")
 
-
 def portal_sucess(request):
     return render(request, 'bloodfinder/portal_sucess.html')
 
 
 class PortalRequestBlood(View):
     def get(self, request):
-        return render(request, 'bloodfinder/request.html')
+        return render(request, 'bloodfinder/request.html', {
+            'districts':Districts.CHOICES,
+            'blood_groups': BloodGroups.CHOICES
+        })
 
     def post(self, request):
-        context = {}
         request_ = Request()
         if PhoneNumber.objects.filter(phone=request.POST['phone']).exists():
             phone = PhoneNumber.objects.get(phone=request.POST['phone'])
@@ -44,13 +45,18 @@ class PortalRequestBlood(View):
         request_.save()
         return redirect('portal_sucess')
 
+
 class PortalRegistrationPhoneVerify(View):
     def get(self, request):
-        return render(request, 'bloodfinder/portal_registration.html')
+        return render(request, 'bloodfinder/portal_registration.html', {
+            'districts':Districts.CHOICES,
+            'blood_groups': BloodGroups.CHOICES
+        })
 
     def post(self, request):
-        request.session['context'] = {'phone': request.POST['phone'], 'name': request.POST['name'], 'district': request.POST['district'],
-                   'blood_group': request.POST['blood_group']}
+        request.session['context'] = {'phone': request.POST['phone'], 'name': request.POST['name'],
+                                      'district': request.POST['district'],
+                                      'blood_group': request.POST['blood_group']}
         sms = SMSBuffer()
         sms.from_ = "BDF-VERIFY"
         sms.to = request.POST['phone']
@@ -75,8 +81,9 @@ class PortalDonorRegistration(View):
             donor.save()
             del request.session['context']
         else:
-            return render(request, 'bloodfinder/portal_registration_otp.html', {'error':'Incorrect OTP'})
+            return render(request, 'bloodfinder/portal_registration_otp.html', {'error': 'Incorrect OTP'})
         redirect('success')
+
 
 '''
 Admin Views
