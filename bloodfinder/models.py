@@ -70,6 +70,7 @@ class Request(models.Model):
 
     rejected_list = models.ManyToManyField(Donor)
 
+    is_verified = models.BooleanField(default=False)
 
 class Donations(models.Model):
     donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
@@ -83,13 +84,13 @@ class Complaints(models.Model):
     text = models.TextField()
     investigating = models.BooleanField(default=False)
     resolved = models.BooleanField(default=False)
-    rejected = models.BooleanField(null=True)
+    rejected = models.NullBooleanField()
 
 
 class SMSBuffer(models.Model):
     """
     Not a core model - specific to prototype to simulate SMS transaction
     """
-    from_ = models.CharField(max_length=10)
+    sender = models.CharField(max_length=10)
     to = models.CharField(max_length=10)
     message = models.TextField()

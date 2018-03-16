@@ -11,5 +11,6 @@
         {% endfor %}
     </select>
     Require Large Volume ? <input type="checkbox" name="high_volume">
+    {% csrf_token %}
     <input type="submit">
 </form>

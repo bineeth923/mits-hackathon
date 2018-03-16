@@ -1,6 +1,6 @@
 {# Registration form #}
 
-<form action="{% reverse 'portal_registration_phone_verify' %}" method="post">
+<form action="{% url 'portal_registration_phone_verify' %}" method="post">
     <input type="text" placeholder="Name" name="name">
     <input type="text" placeholder="phone" name="phone">
     <select name="district">
@@ -8,10 +8,11 @@
         <option value="{{ choice.0 }}">{{ choice.1 }}</option>
         {% endfor %}
     </select>
-    <select name="blood_groups">
+    <select name="blood_group">
         {% for choice in blood_groups %}
         <option value="{{ choice.0 }}">{{ choice.1 }}</option>
         {% endfor %}
     </select>
+    {% csrf_token %}
     <input type="submit">
 </form>

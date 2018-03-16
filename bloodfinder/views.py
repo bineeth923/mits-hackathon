@@ -7,6 +7,8 @@ from django.views import View
 
 from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer, Districts, BloodGroups
 
+opt_key = "TMJHD4GPFOJQNKD3"
+
 '''
 Web Portal
 
@@ -20,7 +22,7 @@ Features:
 def portal_index(request):
     return render(request, "bloodfinder/web_index.html")
 
-def portal_sucess(request):
+def portal_success(request):
     return render(request, 'bloodfinder/portal_sucess.html')
 
 
@@ -43,7 +45,7 @@ class PortalRequestBlood(View):
         request_.high_volume = 'high_volume' in request.POST
         request_.district = request.POST['district']
         request_.save()
-        return redirect('portal_sucess')
+        return redirect('portal_success')
 
 
 class PortalRegistrationPhoneVerify(View):
@@ -58,11 +60,11 @@ class PortalRegistrationPhoneVerify(View):
                                       'district': request.POST['district'],
                                       'blood_group': request.POST['blood_group']}
         sms = SMSBuffer()
-        sms.from_ = "BDF-VERIFY"
+        sms.sender = "BDF-VERIFY"
         sms.to = request.POST['phone']
-        sms.message = "Your OTP is " + pyotp.TOTP(settings.opt_key).now()
+        sms.message = "Your OTP is " + pyotp.TOTP(opt_key).now()
         sms.save()
-        redirect('portal_donor_registration')
+        return redirect('portal_donor_registration')
 
 
 class PortalDonorRegistration(View):
@@ -71,7 +73,7 @@ class PortalDonorRegistration(View):
 
     def post(self, request):
         otp = request.POST['otp']
-        if pyotp.TOTP(settings.opt_key).verify(otp):
+        if pyotp.TOTP(opt_key).verify(otp, valid_window=300):
             context = request.session['context']
             donor = Donor()
             donor.phone = context['phone']
@@ -82,7 +84,7 @@ class PortalDonorRegistration(View):
             del request.session['context']
         else:
             return render(request, 'bloodfinder/portal_registration_otp.html', {'error': 'Incorrect OTP'})
-        redirect('success')
+        redirect('portal_success')
 
 
 '''
