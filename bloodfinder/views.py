@@ -31,17 +31,17 @@ class PortalRequestBlood(View):
 
     def post(self, request):
         context = {}
-        request = Request()
+        request_ = Request()
         if PhoneNumber.objects.filter(phone=request.POST['phone']).exists():
             phone = PhoneNumber.objects.get(phone=request.POST['phone'])
         else:
             phone = PhoneNumber(phone=request.POST['phone'])
             phone.save()
-        request.phone = phone
-        request.blood_group = request.POST['blood_group']
-        request.high_volume = 'high_volume' in request.POST
-        request.district = request.POST['district']
-        request.save()
+        request_.phone = phone
+        request_.blood_group = request.POST['blood_group']
+        request_.high_volume = 'high_volume' in request.POST
+        request_.district = request.POST['district']
+        request_.save()
         return redirect('portal_sucess')
 
 class PortalRegistrationPhoneVerify(View):
@@ -73,6 +73,7 @@ class PortalDonorRegistration(View):
             donor.district = context['district']
             donor.blood_group = context['blood_group']
             donor.save()
+            del request.session['context']
         else:
             return render(request, 'bloodfinder/portal_registration_otp.html', {'error':'Incorrect OTP'})
         redirect('success')
