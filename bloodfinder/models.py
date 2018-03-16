@@ -1,6 +1,4 @@
-
 from django.db import models
-
 
 # Create your models here.
 from django.utils import timezone
@@ -70,8 +68,8 @@ class Request(models.Model):
     is_completed = models.BooleanField(default=False)
     is_fraudulent = models.BooleanField(default=False)
 
-class RequestRefusedList(models.Model):
-    request = models.
+    rejected_list = models.ManyToManyField(Donor)
+
 
 class Donations(models.Model):
     donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
