@@ -1,7 +1,10 @@
+
 from django.db import models
 
 
 # Create your models here.
+from django.utils import timezone
+
 
 class BloodGroups:
     Ap = 'A+'
@@ -63,6 +66,12 @@ class Request(models.Model):
     high_volume = models.BooleanField(default=False)
     district = models.CharField(max_length=2, choices=Districts.CHOICES)
 
+    time = models.DateTimeField(default=timezone.now)
+    is_completed = models.BooleanField(default=False)
+    is_fraudulent = models.BooleanField(default=False)
+
+class RequestRefusedList(models.Model):
+    request = models.
 
 class Donations(models.Model):
     donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
@@ -71,6 +80,12 @@ class Donations(models.Model):
 
 class Complaints(models.Model):
     phone = models.ForeignKey(PhoneNumber, on_delete=models.SET_NULL, null=True)
+    donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
+    complaint_by_donor = models.BooleanField(default=False)
+    text = models.TextField()
+    investigating = models.BooleanField(default=False)
+    resolved = models.BooleanField(default=False)
+    rejected = models.BooleanField(null=True)
 
 
 class SMSBuffer(models.Model):

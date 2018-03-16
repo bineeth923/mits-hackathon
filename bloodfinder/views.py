@@ -77,3 +77,14 @@ class PortalDonorRegistration(View):
         else:
             return render(request, 'bloodfinder/portal_registration_otp.html', {'error':'Incorrect OTP'})
         redirect('success')
+
+'''
+Admin Views
+
+Features:
+* Update Donor Settings
+* Registration
+* Analytics
+* Complaints
+
+'''
