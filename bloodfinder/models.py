@@ -72,6 +72,7 @@ class Request(models.Model):
 
     is_verified = models.BooleanField(default=False)
 
+
 class Donations(models.Model):
     donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
     request = models.ForeignKey(Request, on_delete=models.SET_NULL, null=True)
