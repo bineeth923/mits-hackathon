@@ -77,6 +77,9 @@ class Donations(models.Model):
     donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
     request = models.ForeignKey(Request, on_delete=models.SET_NULL, null=True)
 
+    has_completed = models.BooleanField(default=False)
+    has_accepted = models.NullBooleanField()
+
 
 class Complaints(models.Model):
     phone = models.ForeignKey(PhoneNumber, on_delete=models.SET_NULL, null=True)
@@ -95,3 +98,13 @@ class SMSBuffer(models.Model):
     sender = models.CharField(max_length=10)
     to = models.CharField(max_length=10)
     message = models.TextField()
+
+    is_sent = models.BooleanField(default=False)
+
+    @property
+    def serialize(self):
+        return {
+            'from': self.sender,
+            'to': self.to,
+            'text': self.message
+        }
