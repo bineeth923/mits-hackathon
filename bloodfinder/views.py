@@ -7,13 +7,13 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer, Districts, BloodGroups
+from bloodfinder.blood_rank import blood_rank
+from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer, Districts, BloodGroups, Donations
 
 opt_key = "TMJHD4GPFOJQNKD3"
 
-
-
-
+DONOR_HOTLINE = '9898'
+USER_HOTLINE = '9999'
 
 '''
 Web Portal
@@ -70,6 +70,7 @@ class PortalRegistrationPhoneVerify(View):
         sms.sender = "BDF-VERIFY"
         sms.to = request.POST['phone']
         sms.message = "Your OTP is " + pyotp.TOTP(opt_key).now()
+        print(sms.message)
         sms.save()
         return redirect('portal_donor_registration')
 
@@ -132,4 +133,45 @@ def api_search(request):
     request_.district = request.POST['district']
     request_.save()
     donor_list = blood_rank(request_)
-    return JsonResponse()
+    for donor in donor_list:
+        d = Donations()
+        d.donor = donor
+        d.request = request_
+        d.save()
+        sms = SMSBuffer()
+        sms.sender = DONOR_HOTLINE
+        sms.to = donor.phone
+        sms.message = "There is a request for your blood urgently. Please confirm by replying to this SMS with a YES."
+        sms.save()
+        print(sms.message)
+
+    return JsonResponse({'status': 'ok'})
+
+
+@csrf_exempt
+def api_donor_confirm(request):
+    number = request.POST['number']
+    donation = Donations.objects.get(has_accepted=None, donor__phone=number)
+    donation.has_accepted = True
+    donation.save()
+    return JsonResponse({'status': 'ok'})
+
+
+@csrf_exempt
+def api_user_complete(request):
+    number = request.POST['number']
+    donations = Donations.objects.filter(has_accepted=True, request__phone__phone=number)
+    for donation in donations:
+        donation.has_completed = True
+        donation.save()
+    return JsonResponse({'status': 'ok'})
+
+
+@csrf_exempt
+def get_sms(request):
+    num = request.POST['number']
+    sms_list = SMSBuffer.objects.filter(to=num)
+    for sms in sms_list:
+        sms.is_sent = True
+        sms.save()
+    return JsonResponse({'message_list': [i.serialize for i in sms_list]})

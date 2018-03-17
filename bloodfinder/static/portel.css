@@ -2,6 +2,7 @@ body{
     margin: 0;
     padding: 0;
     background-color: #e5e5e5;
+    transition: 0.35s ease-in-out;
 }
 .container{
     width: 100vw;
@@ -28,9 +29,21 @@ body{
 }
 .card:hover{
     box-shadow: 0 0 14px #00000078;
+    transform:scale(1.2);
 }
 p{
     top: 35%;
     position: relative;
     font-size: 2.5em;
+}
+.card span{
+    top: 18vh;
+    position:  relative;
+    color: #c1bdbd;
+    font-size:  1.5em;
+}
+.card p{
+        color: white;
+    font-family: fantasy;
+    font-size: 4em;
 }
