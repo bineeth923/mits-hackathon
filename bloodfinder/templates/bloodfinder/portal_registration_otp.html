@@ -1,5 +1,54 @@
-<form action="{% url 'portal_donor_registration' %}" method="post">
-    <input type="text" placeholder="Enter OTP" name="otp">
-        {% csrf_token %}
-    <input type="submit">
-</form>
+{% load static %}
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Blood Donor Finder">
+    <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
+
+    <title>Blood Donor Finder</title>
+    <meta name="description" content="Find the blood donor easily"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'propeller.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'propeller-admin.css' %}">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="body-custom">
+<div class="logincard">
+    <form action="{% url 'portal_donor_registration' %}" method="post">
+
+            {% csrf_token %}
+
+  	<div class="pmd-card card-default pmd-z-depth" style="padding: 2%;border-radius: 5px;">
+        <div class="form-group pmd-textfield pmd-textfield-floating-label">
+            <label for="inputError1" class="control-label pmd-input-group-label">Enter OTP</label>
+            <div class="input-group">
+                <div class="input-group-addon"><i class="material-icons md-dark pmd-sm">vpn_key</i></div>
+                <input type="number" minlength="6" maxlength="6" class="form-control" id="exampleInputAmount" value="" name="otp">
+            </div>
+        </div>
+    </div>
+        <input type="submit" style="outline: none;
+    border: none;
+    margin: 2em 0;
+    width: 100%;
+    padding: 2%;
+    border-radius: 5px;
+    background-color: #90CAF9;">
+    </form>
+
+</div>
+
+<!-- Scripts Starts -->
+<script src="{% static 'jquery-1.12.2.min.js' %}"></script>
+<script src="{% static 'bootstrap.js' %}"></script>
+<script src="{% static 'propeller.js' %}"></script>
+
+</body>
+
+
