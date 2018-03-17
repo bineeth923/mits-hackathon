@@ -128,7 +128,7 @@ def api_search(request):
         phone.save()
     request_.phone = phone
     request_.blood_group = request.POST['blood_group']
-    request_.high_volume = 'high_volume' in request.POST
+    request_.high_volume = request.POST['high_volume']
     request_.district = request.POST['district']
     request_.save()
     donor_list = blood_rank(request_)
