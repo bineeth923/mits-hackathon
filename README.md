@@ -3,7 +3,8 @@
 > This repository contains only the backend of the system
 >
 > Please refer the following links for other repositories:  
-> *   (Will be added) 
+> * [The IVRS simulator](https://github.com/pranav-cpy/Dialer)
+> * (Simulated SMS app) 
 
 ## Proposal
 
