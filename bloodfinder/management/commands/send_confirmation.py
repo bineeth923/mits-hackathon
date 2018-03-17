@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE('Sending SMS\n'))
-        donations = Donations.objects.filter(has_accepted=True,has_completed=False)
+        donations = Donations.objects.filter(is_accepted=True,is_completed=False)
         for donation in donations:
             sms = SMSBuffer()
             sms.sender = USER_HOTLINE
