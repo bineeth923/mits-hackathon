@@ -92,7 +92,7 @@ class PortalDonorRegistration(View):
             del request.session['context']
         else:
             return render(request, 'bloodfinder/portal_registration_otp.html', {'error': 'Incorrect OTP'})
-        redirect('portal_success')
+        return redirect('portal_success')
 
 
 '''
@@ -106,7 +106,6 @@ Features:
 
 '''
 
-pass
 
 '''
 APIs
@@ -169,7 +168,7 @@ def api_user_complete(request):
 
 @csrf_exempt
 def get_sms(request):
-    num = request.POST['number']
+    num = request.GET['number']
     sms_list = SMSBuffer.objects.filter(to=num)
     for sms in sms_list:
         sms.is_sent = True
