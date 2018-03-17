@@ -77,8 +77,8 @@ class Donations(models.Model):
     donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True)
     request = models.ForeignKey(Request, on_delete=models.SET_NULL, null=True)
 
-    has_completed = models.BooleanField(default=False)
-    has_accepted = models.NullBooleanField()
+    is_completed = models.BooleanField(default=False)
+    is_accepted = models.NullBooleanField()
 
 
 class Complaints(models.Model):

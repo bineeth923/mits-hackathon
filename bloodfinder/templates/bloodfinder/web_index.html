@@ -17,15 +17,30 @@
 <body>
     <div class="container">
         <div class="left" >
-            <div class="card" style="background-color: #F44336;" onclick="window.location='{% url 'portal_request_blood' %}'">
-                <p>Find Donor</p>
+            <div class="card" id="blood" style="background-color: #F44336;" onclick="window.location='{% url 'portal_request_blood' %}'">
+                <span>I need </span>
+                <p>Blood</p>
             </div>
         </div>
         <div class="right" >
-            <div class="card" style="background-color: #5C6BC0;">
-                <p>Become Donor</p>
+            <div class="card" id="donor" style="background-color: #5C6BC0;" onclick="window.location='{% url 'portal_registration_phone_verify' %}'">
+                <span>Become a</span>
+                <p>Donor</p>
             </div>
         </div>
     </div>
 </body>
+<script src="{% static 'jquery-1.12.2.min.js' %}"></script>
+<script>
+    $('#donor').hover(function () {
+        $('body')[0].style.backgroundColor = '#9FA8DA';
+    }, function () {
+         $('body')[0].style.backgroundColor = '#e5e5e5';
+    });
+    $('#blood').hover(function () {
+        $('body')[0].style.backgroundColor = '#ef9a9a';
+    }, function () {
+         $('body')[0].style.backgroundColor = '#e5e5e5';
+    })
+</script>
 </html>
