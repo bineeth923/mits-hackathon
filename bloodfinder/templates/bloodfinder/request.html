@@ -1,0 +1,127 @@
+{% load static %}
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Blood Donor Finder">
+    <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
+
+    <title>Blood Donor Finder</title>
+    <meta name="description" content="Find the blood donor easily"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'propeller.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'propeller-admin.css' %}">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="body-custom">
+<div class="logincard">
+  	<div class="pmd-card card-default pmd-z-depth">
+		<div class="login-card">
+			<form action="{% url 'portal_request_blood' %}" method="post">
+				<div class="pmd-card-title card-header-border text-center">
+					<h1>Search <span> <strong>Donors</strong></span></h1>
+				</div>
+				<div class="pmd-card-body">
+					<div class="alert alert-success" role="alert"> Oh snap! Change a few things up and try submitting again. </div>
+                    <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                        <label for="inputError1" class="control-label pmd-input-group-label">Phone Number</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="material-icons md-dark pmd-sm">perm_identity</i></div>
+                            <input type="text" class="form-control" id="exampleInputAmount" value="" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                        <label>District</label>
+                        <select class="select-simple form-control pmd-select2" name="district">
+                            <option></option>
+                            {% for choice in districts %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                        <label>Blood Group</label>
+                        <select class="select-simple form-control pmd-select2" name="blood_group">
+                            <option></option>
+                            {% for choice in blood_groups %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+				<div class="pmd-card-footer card-footer-no-border card-footer-p16 text-center">
+					<div class="form-group clearfix">
+                        <div class="checkbox pull-left">
+                            <label class="pmd-checkbox checkbox-pmd-ripple-effect">
+                                <input type="checkbox" checked="" value="" name="high_volume">
+                                <span class="pmd-checkbox"> Require Large Volume?</span>
+                            </label>
+                        </div>
+                        </div>
+                    <input type="submit" style=" width:  100%; background-color: #1976D2; outline:  none;border:  none;padding:  2%;color:  white;">
+				</div>
+                {% csrf_token %}
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Scripts Starts -->
+<script src="{% static 'jquery-1.12.2.min.js' %}"></script>
+<script src="{% static 'bootstrap.js' %}"></script>
+<script src="{% static 'propeller.js' %}"></script>
+<script>
+	$(document).ready(function() {
+		var sPath=window.location.pathname;
+		var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+		$(".pmd-sidebar-nav").each(function(){
+			$(this).find("a[href='"+sPage+"']").parents(".dropdown").addClass("open");
+			$(this).find("a[href='"+sPage+"']").parents(".dropdown").find('.dropdown-menu').css("display", "block");
+			$(this).find("a[href='"+sPage+"']").parents(".dropdown").find('a.dropdown-toggle').addClass("active");
+			$(this).find("a[href='"+sPage+"']").addClass("active");
+		});
+	});
+</script>
+<!-- login page sections show hide -->
+<script type="text/javascript">
+	$(document).ready(function(){
+	 $('.app-list-icon li a').addClass("active");
+		$(".login-for").click(function(){
+			$('.login-card').hide()
+			$('.forgot-password-card').show();
+		});
+		$(".signin").click(function(){
+			$('.login-card').show()
+			$('.forgot-password-card').hide();
+		});
+	});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+		$(".login-register").click(function(){
+			$('.login-card').hide()
+			$('.forgot-password-card').hide();
+			$('.register-card').show();
+		});
+
+		$(".register-login").click(function(){
+			$('.register-card').hide()
+			$('.forgot-password-card').hide();
+			$('.login-card').show();
+		});
+		$(".forgot-password").click(function(){
+			$('.login-card').hide()
+			$('.register-card').hide()
+			$('.forgot-password-card').show();
+		});
+});
+</script>
+
+<!-- Scripts Ends -->
+
+</body>

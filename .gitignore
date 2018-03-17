@@ -84,3 +84,9 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+.gitignore
+.idea/
+blood_donor_finder/__pycache__/
+db.sqlite3
+
+

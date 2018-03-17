@@ -1,0 +1,5 @@
+<form action="{% url 'portal_donor_registration' %}" method="post">
+    <input type="text" placeholder="Enter OTP" name="otp">
+        {% csrf_token %}
+    <input type="submit">
+</form>

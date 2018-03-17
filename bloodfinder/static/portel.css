@@ -1,0 +1,36 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #e5e5e5;
+}
+.container{
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+.left , .right{
+    width: 49vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+}
+.card{
+    border-radius: 5px;
+    border:solid #555555 1px;
+    height: 400px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 0 2px #00000075;
+    transition: 0.35s ease-in-out;
+    cursor: pointer;
+}
+.card:hover{
+    box-shadow: 0 0 14px #00000078;
+}
+p{
+    top: 35%;
+    position: relative;
+    font-size: 2.5em;
+}
