@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Limelight');
 body{
     margin: 0;
     padding: 0;
@@ -5,13 +6,13 @@ body{
     transition: 0.35s ease-in-out;
 }
 .container{
-    width: 100vw;
+    width: 98vw;
     height: 100vh;
     padding: 0;
 }
 .left , .right{
     width: 49vw;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,8 +21,8 @@ body{
 .card{
     border-radius: 5px;
     border:solid #555555 1px;
-    height: 400px;
-    width: 400px;
+    height: 300px;
+    width: 300px;
     text-align: center;
     box-shadow: 0 0 2px #00000075;
     transition: 0.35s ease-in-out;
@@ -32,18 +33,24 @@ body{
     transform:scale(1.2);
 }
 p{
-    top: 35%;
+    top: 12%;
     position: relative;
     font-size: 2.5em;
 }
 .card span{
-    top: 18vh;
+    top: 10vh;
     position:  relative;
     color: #c1bdbd;
-    font-size:  1.5em;
+    font-size:  2em;
 }
 .card p{
         color: white;
     font-family: fantasy;
     font-size: 4em;
+}
+.title{
+    text-align: center;
+    font-size:1.5em;
+    font-family: 'Limelight', cursive;
+    color:#616161;
 }
