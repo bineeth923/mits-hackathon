@@ -1,3 +1,5 @@
+import json
+
 import pyotp
 from django.conf import settings
 from django.http import JsonResponse
@@ -5,7 +7,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from bloodfinder.blood_rank import blood_rank
 from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer, Districts, BloodGroups, Donations
@@ -106,7 +108,6 @@ Features:
 
 '''
 
-
 '''
 APIs
 
@@ -121,15 +122,17 @@ APIs
 @csrf_exempt
 def api_search(request):
     request_ = Request()
-    if PhoneNumber.objects.filter(phone=request.POST['phone']).exists():
-        phone = PhoneNumber.objects.get(phone=request.POST['phone'])
+    data = json.loads(request.body)
+    print(data)
+    if PhoneNumber.objects.filter(phone=data['phone']).exists():
+        phone = PhoneNumber.objects.get(phone=data['phone'])
     else:
-        phone = PhoneNumber(phone=request.POST['phone'])
+        phone = PhoneNumber(phone=data['phone'])
         phone.save()
     request_.phone = phone
-    request_.blood_group = request.POST['blood_group']
-    request_.high_volume = request.POST['high_volume']
-    request_.district = request.POST['district']
+    request_.blood_group = data['blood_group']
+    request_.high_volume = data['high_volume']
+    request_.district = data['district']
     request_.save()
     donor_list = blood_rank(request_)
     for donor in donor_list:
@@ -169,8 +172,9 @@ def api_user_complete(request):
 @csrf_exempt
 def get_sms(request):
     num = request.GET['number']
-    sms_list = SMSBuffer.objects.filter(to=num)
+    sms_list = SMSBuffer.objects.filter(to=num, is_sent=False)
     for sms in sms_list:
+        print(sms)
         sms.is_sent = True
         sms.save()
     return JsonResponse({'message_list': [i.serialize for i in sms_list]})

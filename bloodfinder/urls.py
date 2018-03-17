@@ -13,5 +13,5 @@ urlpatterns = [
     path('api/user/complete', views.api_user_complete, name="user_complete"),
     path('api/donor/confirm', views.api_donor_confirm, name="donor_confirm"),
 
-    path('get/sms', views.get_sms, name="get_sms")
+    path('api/getsms', views.get_sms, name="get_sms")
 ]

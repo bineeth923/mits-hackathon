@@ -40,8 +40,11 @@ def get_weighted_donors(request: Request):
     blood_group = request.blood_group
     weighted_list = []
     max_donations = Donations.objects.values('donor').annotate(count=Count('donor')).aggregate(Max('count'))['count__max']
+    if max_donations is None:
+        max_donations = 0
     for d in Donor.objects.filter(district=district):
         w = WeightedDonor()
+        w.donor = d
         w.weight = get_blood_weight(blood_group, d.blood_group)
         if w.weight == 0:
             continue
@@ -51,11 +54,12 @@ def get_weighted_donors(request: Request):
             w.weight += 1
         else:
             continue
-        if d.donations_set.filter(has_completed=True).last().request.time - timezone.now() < timezone.timedelta(weeks=12):
-            continue
-        else:
-            w.weight /= (d.donations_set.filter(has_completed=True).last().request.time - timezone.now()).days
-        w.weight += float(Donations.objects.filter(donor=d).aggregate(Count('id')))/float(max_donations)
+        if d.donations_set.filter(is_completed=True).exists():
+            if d.donations_set.filter(is_completed=True).last().request.time - timezone.now() < timezone.timedelta(weeks=12):
+                continue
+            else:
+                w.weight /= (d.donations_set.filter(is_completed=True).last().request.time - timezone.now()).days
+        w.weight += float(Donations.objects.filter(donor=d).count())/float(max_donations+1)
         weighted_list.append(w)
     weighted_list.sort(key=(lambda x:x.weight))
     return weighted_list
@@ -63,5 +67,6 @@ def get_weighted_donors(request: Request):
 
 def blood_rank(request: Request, top=3):
     weighted_list = get_weighted_donors(request)
+    print(weighted_list)
     donor_list = [w.donor for w in weighted_list]
     return donor_list[:top]
