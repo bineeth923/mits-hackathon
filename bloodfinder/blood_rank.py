@@ -45,7 +45,7 @@ def get_weighted_donors(request: Request):
         w.weight = get_blood_weight(blood_group, d.blood_group)
         if w.weight == 0:
             continue
-        if Donations.objects.filter(donor=d).filter(has_accepted=None).exists():
+        if Donations.objects.filter(donor=d, request=request).exists():
             continue
         if district == d.district:
             w.weight += 1
@@ -63,4 +63,5 @@ def get_weighted_donors(request: Request):
 
 def blood_rank(request: Request, top=3):
     weighted_list = get_weighted_donors(request)
-    return weighted_list[:top]
+    donor_list = [w.donor for w in weighted_list]
+    return donor_list[:top]

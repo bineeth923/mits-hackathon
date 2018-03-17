@@ -70,6 +70,7 @@ class PortalRegistrationPhoneVerify(View):
         sms.sender = "BDF-VERIFY"
         sms.to = request.POST['phone']
         sms.message = "Your OTP is " + pyotp.TOTP(opt_key).now()
+        print(sms.message)
         sms.save()
         return redirect('portal_donor_registration')
 
@@ -142,6 +143,7 @@ def api_search(request):
         sms.to = donor.phone
         sms.message = "There is a request for your blood urgently. Please confirm by replying to this SMS with a YES."
         sms.save()
+        print(sms.message)
 
     return JsonResponse({'status': 'ok'})
 
