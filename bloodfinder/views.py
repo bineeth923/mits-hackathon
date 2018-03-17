@@ -1,13 +1,19 @@
 import pyotp
 from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 from bloodfinder.models import Request, PhoneNumber, Donor, SMSBuffer, Districts, BloodGroups
 
 opt_key = "TMJHD4GPFOJQNKD3"
+
+
+
+
 
 '''
 Web Portal
@@ -22,6 +28,7 @@ Features:
 def portal_index(request):
     return render(request, "bloodfinder/web_index.html")
 
+
 def portal_success(request):
     return render(request, 'bloodfinder/portal_sucess.html')
 
@@ -29,7 +36,7 @@ def portal_success(request):
 class PortalRequestBlood(View):
     def get(self, request):
         return render(request, 'bloodfinder/request.html', {
-            'districts':Districts.CHOICES,
+            'districts': Districts.CHOICES,
             'blood_groups': BloodGroups.CHOICES
         })
 
@@ -51,7 +58,7 @@ class PortalRequestBlood(View):
 class PortalRegistrationPhoneVerify(View):
     def get(self, request):
         return render(request, 'bloodfinder/portal_registration.html', {
-            'districts':Districts.CHOICES,
+            'districts': Districts.CHOICES,
             'blood_groups': BloodGroups.CHOICES
         })
 
@@ -97,3 +104,32 @@ Features:
 * Complaints
 
 '''
+
+pass
+
+'''
+APIs
+
+* Search
+* Update
+* Complaint
+* Feedback
+
+'''
+
+
+@csrf_exempt
+def api_search(request):
+    request_ = Request()
+    if PhoneNumber.objects.filter(phone=request.POST['phone']).exists():
+        phone = PhoneNumber.objects.get(phone=request.POST['phone'])
+    else:
+        phone = PhoneNumber(phone=request.POST['phone'])
+        phone.save()
+    request_.phone = phone
+    request_.blood_group = request.POST['blood_group']
+    request_.high_volume = 'high_volume' in request.POST
+    request_.district = request.POST['district']
+    request_.save()
+    donor_list = blood_rank(request_)
+    return JsonResponse()

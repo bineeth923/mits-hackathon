@@ -87,3 +87,6 @@ fabric.properties
 .gitignore
 .idea/
 blood_donor_finder/__pycache__/
+db.sqlite3
+
+
